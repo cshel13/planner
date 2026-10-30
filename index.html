@@ -564,14 +564,18 @@
   .creator { display: flex; align-items: center; gap: 18px; padding: 18px 20px; max-width: 560px; }
   .creator-photo {
     flex: none;
-    width: 84px; height: 84px;
-    border-radius: 50%;
+    width: 120px;
+    aspect-ratio: 3 / 4;
+    max-width: 100%;
     object-fit: cover;
-    border: 3px solid var(--accent);
-    transform: rotate(-4deg);
-    transition: transform .3s cubic-bezier(.3, 1.6, .5, 1);
+    padding: 6px 6px 18px;
+    background: oklch(99% 0.004 var(--h));
+    border-radius: 4px;
+    box-shadow: var(--shadow), 0 2px 6px oklch(20% 0.02 var(--h) / .15);
+    transform: rotate(-5deg);
+    transition: transform .35s cubic-bezier(.3, 1.6, .5, 1);
   }
-  .creator:hover .creator-photo { transform: rotate(6deg) scale(1.06); }
+  .creator:hover .creator-photo { transform: rotate(4deg) scale(1.05); }
   .creator-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .creator h3 { font-size: 18px; font-weight: 700; }
   .creator p { margin: 2px 0 0; color: var(--muted); font-size: 14px; max-width: 52ch; }
@@ -654,7 +658,7 @@
   <footer class="creator card" id="creator" hidden>
     <img class="creator-photo" id="creator-photo" alt="">
     <div class="creator-text">
-      <span class="eyebrow">Made by</span>
+      <span class="eyebrow">Made with 🍌</span>
       <h3 id="creator-name"></h3>
       <p id="creator-blurb"></p>
     </div>
@@ -702,8 +706,8 @@
   const LOCAL_KEY = "weekly-todo-tasks";
   const PREFS_KEY = "planner-prefs";
   const TAG_NAMES = { work: "Work", personal: "Personal", errands: "Errands" };
-  // The creator card shows once a name and blurb are filled in.
-  const CREATOR = { name: "", blurb: "", photo: "" };
+  // The creator card shows once a blurb is filled in; name is optional.
+  const CREATOR = { name: "", blurb: "Hope you guys enjoy the website!", photo: "creator.jpg" };
 
   const pad = n => String(n).padStart(2, "0");
   const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -1301,11 +1305,11 @@
     if (VIEWS.includes(v) && v !== view) { view = v; render(); }
   });
 
-  if (CREATOR.name && CREATOR.blurb) {
-    document.getElementById("creator-name").textContent = CREATOR.name;
+  if (CREATOR.blurb) {
+    document.getElementById("creator-name").textContent = CREATOR.name || "A note from the creator";
     document.getElementById("creator-blurb").textContent = CREATOR.blurb;
     const img = document.getElementById("creator-photo");
-    if (CREATOR.photo) { img.src = CREATOR.photo; img.alt = "Photo of " + CREATOR.name; } else img.hidden = true;
+    if (CREATOR.photo) { img.src = CREATOR.photo; img.alt = "The creator and a friend posing with a giant banana mascot"; } else img.hidden = true;
     document.getElementById("creator").hidden = false;
   }
 
