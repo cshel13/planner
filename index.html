@@ -1026,7 +1026,8 @@
   // ---- Shared pieces ----
   function taskEl(id, t, { showNotes = false, showDate = false } = {}) {
     const li = el("li", "task" + (t.done ? " done" : ""));
-    li.draggable = true;
+    // Safari on iPhone ignores taps on controls inside draggable rows, and touch can't drag anyway
+    li.draggable = !touch.matches;
 
     const cb = el("input", "check");
     cb.type = "checkbox";
@@ -1461,7 +1462,7 @@
       ? "Tap a task to change its date, time, tag or notes."
       : "Press Enter to add a task. Click a task to add a time, tag or notes. Drag tasks between days, or onto Inbox to unschedule.";
   }
-  touch.addEventListener("change", applyNote);
+  touch.addEventListener("change", () => { applyNote(); render(); });
   phone.addEventListener("change", render);
   applyNote();
 
